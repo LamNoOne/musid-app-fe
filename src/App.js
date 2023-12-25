@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import createUrlLogin from "./services/login/urlLoginService";
 import { useDispatch, useSelector } from 'react-redux'
 import getToken from "./services/login/getTokenService";
-import { getAccessTokenState, saveToken } from "./features/token/tokenSlice";
+import { getTokenState, saveToken } from "./features/token/tokenSlice";
+import expiredToken from "./services/expiredToken";
 
 
 const App = () => {
     const dispatch = useDispatch()
+    const tokenState = useSelector(getTokenState)
     const [urlLogin, setUrlLogin] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -42,9 +44,8 @@ const App = () => {
         }
     }
 
-    const obj = JSON.parse(sessionStorage.getItem('persist:token'))
-    console.log(obj)
-
+    console.log(tokenState)
+    console.log(expiredToken())
 
     return (
         <>

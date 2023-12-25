@@ -15,8 +15,7 @@ export const tokenSlice = createSlice({
     },
 });
 
-export const getAccessTokenState = (state) => state.token.accessToken;
-export const getRefreshTokenState = (state) => state.token.refreshToken;
+export const getTokenState = (state) => state.token;
 
 export const { saveToken } = tokenSlice.actions;
 

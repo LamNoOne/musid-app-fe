@@ -1,4 +1,6 @@
+import Cookies from 'js-cookie'
 import { configureStore } from "@reduxjs/toolkit";
+import { CookieStorage } from "redux-persist-cookie-storage";
 import tokenReducer from "../features/token/tokenSlice";
 import {
     persistStore,
@@ -10,9 +12,6 @@ import {
     PURGE,
     REGISTER,
 } from "redux-persist";
-import { CookieStorage } from "redux-persist-cookie-storage";
-import Cookies from 'cookies-js'
-import { version } from "react";
 
 const PERSIST_TOKEN_NAME = process.env.REACT_APP_TOKEN_PERSIST_KEY;
 
@@ -29,16 +28,9 @@ export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-        serializableCheck: {
-            ignoredActions: [
-                FLUSH,
-                REHYDRATE,
-                PAUSE,
-                PERSIST,
-                PURGE,
-                REGISTER,
-            ],
-        },
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
     }),
 });
 
