@@ -1,10 +1,8 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import createUrlLogin from "./services/login/urlLoginService";
 import { useDispatch, useSelector } from 'react-redux'
-import getToken from "./services/login/getTokenService";
 import { getTokenState, saveToken } from "./features/token/tokenSlice";
-import expiredToken from "./services/expiredToken";
+import authService from "./services/authService";
 
 
 const App = () => {
@@ -17,7 +15,7 @@ const App = () => {
     useEffect(() => {
         async function getUrlLogin() {
             try {
-                const url = await createUrlLogin();
+                const url = await authService.createUrlLogin();
                 setUrlLogin(url);
                 setLoading(false);
             } catch (error) {
@@ -38,19 +36,30 @@ const App = () => {
     }
 
     const handleGetToken = async () => {
-        const token = await getToken()
+        const token = await authService.getToken()
+        if(token) {
+            dispatch(saveToken({...token}))
+        }
+    }
+
+    const handleRefreshToken =  async() => {
+        const token = await authService.refreshToken()
+        console.log('New token', token)
         if(token) {
             dispatch(saveToken({...token}))
         }
     }
 
     console.log(tokenState)
-    console.log(expiredToken())
+    // if(Boolean(tokenState)) {
+    //     console.log(expiredToken())
+    // }
 
     return (
         <>
             <a href={`${urlLogin}`}>LOGIN</a>
             <button onClick={() => handleGetToken()}>GET TOKEN</button>
+            <button onClick={() => handleRefreshToken()}>REFRESH TOKEN</button>
         </>
     );
 };

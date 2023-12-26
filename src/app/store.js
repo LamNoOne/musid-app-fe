@@ -1,4 +1,4 @@
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 import { configureStore } from "@reduxjs/toolkit";
 import { CookieStorage } from "redux-persist-cookie-storage";
 import tokenReducer from "../features/token/tokenSlice";
@@ -21,17 +21,24 @@ const persistConfig = {
     storage: new CookieStorage(Cookies),
 };
 const persistedReducer = persistCombineReducers(persistConfig, {
-    token: tokenReducer
+    token: tokenReducer,
 });
 
 export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [
+                    FLUSH,
+                    REHYDRATE,
+                    PAUSE,
+                    PERSIST,
+                    PURGE,
+                    REGISTER,
+                ],
+            },
+        }),
 });
 
 export const persistor = persistStore(store);
